@@ -21,18 +21,28 @@ red = "\x1b[31;20m"
 bold_red = "\x1b[31;1m"
 reset = "\x1b[0m"
 
-# Main Function to log in the console
+
+# Function to format a string
+def format(string : str, level : Warninglevels = Warninglevels.DEBUG) -> str: # Set Debug as default warning level
+    formatted_string = ""
+    if level == Warninglevels.DEBUG:
+        formatted_string = grey + "[DEBUG]: " + string + reset
+    elif level == Warninglevels.INFO:
+        formatted_string = grey + "[INFO]: " + string + reset
+    elif level == Warninglevels.WARNING:
+        formatted_string = yellow + "[WARNING]: " + string + reset
+    elif level == Warninglevels.ERROR:
+        formatted_string = red + "[ERROR]: " + string + reset
+    elif level == Warninglevels.CRIT_ERROR:
+        formatted_string = bold_red + "[CRITICAL ERROR]: " + string + reset
+    else:
+        raise ValueError("Invalid warning level")
+    return formatted_string
+
+# Function to format and log in the console
 def notify(string : str, level : Warninglevels = Warninglevels.DEBUG) -> None: # Set Debug as default warning level
     if level == Warninglevels.DEBUG:
         if ShowDebug:
-            print(grey + "[DEBUG]: " + string + reset)
-    elif level == Warninglevels.INFO:
-        print(grey + "[INFO]: " + string + reset)
-    elif level == Warninglevels.WARNING:
-        print(yellow + "[WARNING]: " + string + reset) 
-    elif level == Warninglevels.ERROR:
-        print(red + "[ERROR]: " + string + reset)
-    elif level == Warninglevels.CRIT_ERROR:
-        print(bold_red + "[CRITICAL ERROR]: " + string + reset)
+            print(format(string=string, level=level))
     else:
-        raise ValueError("Invalid warning level")
+        print(format(string=string, level=level))
